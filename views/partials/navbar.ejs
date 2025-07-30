@@ -1,0 +1,13 @@
+<nav style="background-color:#14532d; padding:12px 30px; color:white; display:flex; justify-content:space-between; align-items:center;">
+  <div><a href="/" style="color:white; text-decoration:none; font-weight:bold; font-size:1.3rem;">Sajilo Sewa</a></div>
+  <div>
+   <a href="/home">Home</a>
+    <a href="/services">Services</a>
+    <% if (session && session.user) { %>
+      <a href="/logout">Logout</a>
+    <% } else { %>
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
+    <% } %>
+  </div>
+</nav>

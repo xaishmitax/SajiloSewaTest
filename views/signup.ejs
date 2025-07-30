@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Signup - Sajilo Sewa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <%- include('partials/navbar') %>
+
+  <!-- Header -->
+  <header>
+    <h1>Signup</h1>
+    <p>Create your account below</p>
+  </header>
+
+  <!-- Signup Form -->
+  <main>
+    <section>
+      <form action="/signup" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required />
+
+        <label for="role">Role:</label>
+        <select name="role" id="role" required>
+          <option value="">Select</option>
+          <option value="customer">Customer</option>
+          <option value="worker">Worker</option>
+        </select>
+
+        <button type="submit">Signup</button>
+      </form>
+
+      <p style="margin-top: 20px;">
+        Already have an account?
+        <a href="/login">Login</a>
+      </p>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Select Role - Sajilo Sewa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .role-box {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 50px;
+      flex-wrap: wrap;
+    }
+
+    .role-box a {
+      text-decoration: none;
+      padding: 20px 40px;
+      font-size: 1.2rem;
+      background-color: #14532d;
+      color: white;
+      border-radius: 10px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .role-box a:hover {
+      background-color: #166534;
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <%- include('partials/navbar') %>
+
+  <!-- Header -->
+  <header>
+    <h1>Welcome to Sajilo Sewa</h1>
+    <p>Choose how you want to continue</p>
+  </header>
+
+  <!-- Role Selection Buttons -->
+  <main>
+    <section class="role-box">
+      <a href="/login?role=customer">I am a Customer</a>
+      <a href="/login?role=worker">I am a Worker</a>
+    </section>
+  </main>
+
+</body>
+</html>

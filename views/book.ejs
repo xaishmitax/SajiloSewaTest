@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book a Service - Sajilo Sewa</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('partials/navbar') %>
+
+  <main style="max-width: 600px; margin: 40px auto;">
+    <h2>Book a Service</h2>
+    <form action="/book" method="POST">
+      <label for="name">Full Name:</label>
+      <input type="text" name="name" id="name" required />
+
+      <label for="phone">Phone Number:</label>
+      <input type="text" name="phone" id="phone" required />
+
+      <label for="service">Select a Service:</label>
+      <select name="service" id="service" required>
+        <option value="">--Choose--</option>
+        <option>House Cleaning</option>
+        <option>Interior Painting</option>
+        <option>Electrical & Wire Repair</option>
+        <option>Plumber</option>
+        <option>Appliance Repair</option>
+        <option>Local Moving</option>
+      </select>
+
+      <button type="submit">Book Now</button>
+    </form>
+  </main>
+</body>
+</html>

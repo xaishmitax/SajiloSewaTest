@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login - Sajilo Sewa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <%- include('partials/navbar') %>
+
+  <!-- Header -->
+  <header>
+    <h1>Login</h1>
+    <p>Access your account</p>
+  </header>
+
+  <!-- Login Form -->
+  <main>
+    <section>
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="error-message"><%= error %></div>
+      <% } %>
+
+      <form action="/login" method="POST">
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" id="password" required />
+
+        <label for="role">Role:</label>
+        <select name="role" id="role" required>
+          <option value="">Select</option>
+          <option value="customer" <%= typeof role !== 'undefined' && role === 'customer' ? 'selected' : '' %>>Customer</option>
+          <option value="worker" <%= typeof role !== 'undefined' && role === 'worker' ? 'selected' : '' %>>Worker</option>
+        </select>
+
+        <button type="submit">Login</button>
+      </form>
+
+      <p style="margin-top: 20px;">
+        Don't have an account?
+        <a href="/signup">Signup</a>
+      </p>
+    </section>
+  </main>
+
+</body>
+</html>

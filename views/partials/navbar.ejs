@@ -1,13 +1,29 @@
-<nav style="background-color:#14532d; padding:12px 30px; color:white; display:flex; justify-content:space-between; align-items:center;">
-  <div><a href="/" style="color:white; text-decoration:none; font-weight:bold; font-size:1.3rem;">Sajilo Sewa</a></div>
-  <div>
-   <a href="/home">Home</a>
-    <a href="/services">Services</a>
-    <% if (session && session.user) { %>
-      <a href="/logout">Logout</a>
-    <% } else { %>
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-    <% } %>
+<nav class="navbar">
+  <div class="logo">
+    <a href="/">Fix<span class="com">Sewa</span></a>
   </div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <% if (typeof user !== 'undefined' && user) { %>
+      <% if (user.role === 'worker') { %>
+        <li><a href="/worker-dashboard">Worker Dashboard</a></li>
+      <% } else { %>
+        <li><a href="/customer-dashboard">My Account</a></li>
+      <% } %>
+    <% } %>
+  </ul>
+  <% if (typeof user !== 'undefined' && user) { %>
+    <div class="user-info">
+      <span>Welcome, <%= user.name %></span>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+  <% } else { %>
+    <div class="auth-buttons">
+      <a href="/login" class="login-btn">Sign in</a>
+      <a href="/become-worker" class="worker-btn">Become a Worker</a>
+    </div>
+  <% } %>
 </nav>

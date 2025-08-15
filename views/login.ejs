@@ -2,51 +2,323 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Login - Sajilo Sewa</title>
+  <title>Login - Fix Sewa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      min-height: 600px;
+    }
+
+    .login-image {
+      flex: 1;
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                  url('/images/hero-tools.jpg') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      position: relative;
+    }
+
+    .login-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(13, 193, 111, 0.1);
+    }
+
+    .image-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .image-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .image-content p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .login-form {
+      flex: 1;
+      padding: 50px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .form-header h1 {
+      font-size: 2.5rem;
+      color: #374151;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .form-header p {
+      color: #6b7280;
+      font-size: 1.1rem;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #374151;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #0dc16f;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(13, 193, 111, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: #9ca3af;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: #0dc16f;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: #0aa556;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(13, 193, 111, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .form-footer a {
+      color: #0dc16f;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    .form-footer a:hover {
+      color: #0aa556;
+      text-decoration: underline;
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 25px;
+      border: 1px solid #fecaca;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    .role-info {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .role-info h3 {
+      color: #0369a1;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .role-info p {
+      color: #0c4a6e;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      .login-container {
+        flex-direction: column;
+        min-height: auto;
+      }
+      
+      .login-image {
+        min-height: 200px;
+        padding: 30px 20px;
+      }
+      
+      .image-content h2 {
+        font-size: 2rem;
+      }
+      
+      .login-form {
+        padding: 30px 20px;
+      }
+      
+      .form-header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        margin: 10px;
+        border-radius: 15px;
+      }
+      
+      .login-form {
+        padding: 25px 15px;
+      }
+      
+      .form-group input,
+      .form-group select {
+        padding: 12px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="login-container">
+    <div class="login-image">
+      <div class="image-content">
+        <h2>Welcome Back</h2>
+        <p>Access your Fix Sewa account and continue managing your services</p>
+      </div>
+    </div>
+    
+    <div class="login-form">
+      <div class="form-header">
+        <h1>Login</h1>
+        <p>Sign in to your account</p>
+      </div>
 
-  <!-- Navbar -->
-  <%- include('partials/navbar') %>
-
-  <!-- Header -->
-  <header>
-    <h1>Login</h1>
-    <p>Access your account</p>
-  </header>
-
-  <!-- Login Form -->
-  <main>
-    <section>
       <% if (typeof error !== 'undefined' && error) { %>
-        <div class="error-message"><%= error %></div>
+        <div class="error-message">
+          <i class="fas fa-exclamation-circle"></i> <%= error %>
+        </div>
       <% } %>
 
+      <div class="role-info">
+        <h3><i class="fas fa-info-circle"></i> Choose Your Role</h3>
+        <p><strong>Customer:</strong> Book services and manage your appointments</p>
+        <p><strong>Worker:</strong> Access your work dashboard and manage bookings</p>
+      </div>
+
       <form action="/login" method="POST">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required />
+        <div class="form-group">
+          <label for="email">
+            <i class="fas fa-envelope"></i> Email Address
+          </label>
+          <input 
+            type="email" 
+            name="email" 
+            id="email" 
+            placeholder="Enter your email address"
+            required 
+          />
+        </div>
 
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required />
+        <div class="form-group">
+          <label for="password">
+            <i class="fas fa-lock"></i> Password
+          </label>
+          <input 
+            type="password" 
+            name="password" 
+            id="password" 
+            placeholder="Enter your password"
+            required 
+          />
+        </div>
 
-        <label for="role">Role:</label>
-        <select name="role" id="role" required>
-          <option value="">Select</option>
-          <option value="customer" <%= typeof role !== 'undefined' && role === 'customer' ? 'selected' : '' %>>Customer</option>
-          <option value="worker" <%= typeof role !== 'undefined' && role === 'worker' ? 'selected' : '' %>>Worker</option>
-        </select>
+        <div class="form-group">
+          <label for="role">
+            <i class="fas fa-user-tag"></i> Select Role
+          </label>
+          <select name="role" id="role" required>
+            <option value="">Choose your role</option>
+            <option value="customer" <%= typeof role !== 'undefined' && role === 'customer' ? 'selected' : '' %>>Customer</option>
+            <option value="worker" <%= typeof role !== 'undefined' && role === 'worker' ? 'selected' : '' %>>Worker</option>
+          </select>
+        </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" class="submit-btn">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </button>
       </form>
 
-      <p style="margin-top: 20px;">
-        Don't have an account?
-        <a href="/signup">Signup</a>
-      </p>
-    </section>
-  </main>
-
+      <div class="form-footer">
+        <p>Don't have an account? <a href="/signup">Create one here</a></p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Fix Sewa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: #1e3a8a;
+            padding: 1rem 2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #93c5fd;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logout-btn {
+            background: #dc2626;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #b91c1c;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: #1e3a8a;
+            color: white;
+            padding: 1.5rem 2rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .action-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            border-color: #1e3a8a;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.1);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            color: #1e3a8a;
+            margin-bottom: 1rem;
+        }
+
+        .action-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+
+        .action-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .action-btn {
+            background: #1e3a8a;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: #1e40af;
+        }
+
+        .bookings-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bookings-table th,
+        .bookings-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .bookings-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .bookings-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-assigned {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-in-progress {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .no-bookings {
+            padding: 3rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .profile-content {
+            padding: 2rem;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .profile-icon {
+            font-size: 1.5rem;
+            color: #1e3a8a;
+            width: 40px;
+            text-align: center;
+        }
+
+        .profile-details h4 {
+            color: #374151;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-details p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 1rem auto;
+                padding: 0 0.5rem;
+            }
+
+            .dashboard-header {
+                padding: 1.5rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-grid {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .bookings-table {
+                font-size: 0.875rem;
+            }
+
+            .bookings-table th,
+            .bookings-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="/">Fix<span style="color: #93c5fd;">Sewa</span></a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="user-info">
+            <span>Welcome, <%= user.name %></span>
+            <a href="/logout" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Customer Dashboard</h1>
+            <p class="welcome-text">Welcome back! Manage your bookings and account</p>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number"><%= userBookings.length %></div>
+                <div class="stat-label">Total Bookings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= userBookings.filter(b => b.status === 'pending').length %></div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= userBookings.filter(b => b.status === 'assigned').length %></div>
+                <div class="stat-label">Assigned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number"><%= userBookings.filter(b => b.status === 'completed').length %></div>
+                <div class="stat-label">Completed</div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="section-header">
+                <i class="fas fa-bolt"></i> Quick Actions
+            </div>
+            <div class="actions-grid">
+                <div class="action-card" onclick="window.location.href='/'">
+                    <div class="action-icon">
+                        <i class="fas fa-plus-circle"></i>
+                    </div>
+                    <div class="action-title">Book New Service</div>
+                    <div class="action-description">Schedule a new home service appointment</div>
+                    <button class="action-btn">Book Now</button>
+                </div>
+
+                <div class="action-card" onclick="window.location.href='/services'">
+                    <div class="action-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="action-title">Browse Services</div>
+                    <div class="action-description">Explore all available services and workers</div>
+                    <button class="action-btn">View Services</button>
+                </div>
+
+                <div class="action-card" onclick="window.location.href='/'">
+                    <div class="action-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="action-title">Go to Home</div>
+                    <div class="action-description">Return to the main landing page</div>
+                    <button class="action-btn">Go Home</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Information -->
+        <div class="profile-section">
+            <div class="section-header">
+                <i class="fas fa-user"></i> Profile Information
+            </div>
+            <div class="profile-content">
+                <div class="profile-info">
+                    <div class="profile-item">
+                        <div class="profile-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Full Name</h4>
+                            <p><%= user.name %></p>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Email Address</h4>
+                            <p><%= user.email %></p>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Phone Number</h4>
+                            <p><%= user.phone %></p>
+                        </div>
+                    </div>
+                    <div class="profile-item">
+                        <div class="profile-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="profile-details">
+                            <h4>Member Since</h4>
+                            <p><%= new Date(user.created_at).toLocaleDateString() %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Bookings -->
+        <div class="bookings-section">
+            <div class="section-header">
+                <i class="fas fa-list"></i> My Bookings
+            </div>
+            
+            <% if (userBookings.length === 0) { %>
+                <div class="no-bookings">
+                    <i class="fas fa-inbox" style="font-size: 3rem; color: #d1d5db; margin-bottom: 1rem;"></i>
+                    <p>You haven't made any bookings yet.</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="/" class="action-btn">Book Your First Service</a>
+                    </p>
+                </div>
+            <% } else { %>
+                <div style="overflow-x: auto;">
+                    <table class="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Service</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Worker</th>
+                                <th>Price</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% userBookings.forEach(booking => { %>
+                                <tr>
+                                    <td><strong><%= booking.work_text %></strong></td>
+                                    <td><%= booking.location_text %></td>
+                                    <td><%= new Date(booking.date).toLocaleDateString() %></td>
+                                    <td>
+                                        <span class="status-badge status-<%= booking.status %>">
+                                            <%= booking.status %>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <% if (booking.worker_name) { %>
+                                            <span style="color: #059669;"><%= booking.worker_name %></span>
+                                        <% } else { %>
+                                            <span style="color: #6b7280;">Unassigned</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if (booking.estimated_price) { %>
+                                            <span style="color: #059669;">Rs. <%= booking.estimated_price %></span>
+                                        <% } else { %>
+                                            <span style="color: #6b7280;">Not set</span>
+                                        <% } %>
+                                    </td>
+                                    <td><%= new Date(booking.created_at).toLocaleDateString() %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

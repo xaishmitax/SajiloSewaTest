@@ -2,52 +2,1542 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Select Role - Sajilo Sewa</title>
+  <title>Fix Sewa - Home Services</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
-    .role-box {
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 5%;
+      background: rgba(0, 0, 0, 0.9);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar .logo a {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+    }
+
+    .navbar .logo .com {
+      color: #0dc16f;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+      margin-right: 20px;
+    }
+
+    .nav-links li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #0dc16f;
+    }
+
+    .worker-btn {
+      background: #333;
+      border: 2px solid #666;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+    }
+
+    .worker-btn:hover {
+      background: #0aa556;
+      border-color: #0dc16f;
+    }
+
+    .login-btn {
+      background: #1e3a8a;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      margin-right: 15px;
+    }
+
+    .login-btn:hover {
+      background: #1e40af;
+      transform: translateY(-2px);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info span {
+      color: white;
+      font-weight: 500;
+    }
+
+    .logout-btn {
+      background: #dc2626;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #b91c1c;
+    }
+
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Hero section */
+    .hero-section {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                  url('/images/tools-bg.jpg') center/cover no-repeat;
+      min-height: 100vh;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hero-content {
+      max-width: 1200px;
+      width: 100%;
+      padding: 0 20px;
+      margin-top: 80px; /* Account for fixed navbar */
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: bold;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .search-container {
+      background: rgba(51, 51, 51, 0.95);
+      padding: 40px;
+      border-radius: 20px;
+      margin: 40px 0;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .search-form {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .search-input {
+      position: relative;
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .search-input input,
+    .search-input select {
+      width: 100%;
+      padding: 15px 15px 15px 45px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      font-size: 16px;
+      outline: none;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+    }
+
+    .search-input select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 15px center;
+      background-size: 16px;
+      padding-right: 45px;
+    }
+
+    .search-input input:focus,
+    .search-input select:focus {
+      box-shadow: 0 0 0 3px rgba(13, 193, 111, 0.3);
+    }
+
+    .search-input i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      font-size: 20px;
+    }
+
+    .book-now-btn {
+      background: #0dc16f;
+      color: white;
+      padding: 18px 35px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(13, 193, 111, 0.3);
+    }
+
+    .book-now-btn:hover {
+      background: #0aa556;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(13, 193, 111, 0.5);
+    }
+
+    .hero-description {
+      font-size: 1.8rem;
+      margin: 40px 0;
+      line-height: 1.6;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .separator {
+      width: 120px;
+      height: 4px;
+      background: #d4a574;
+      margin: 35px auto;
+      border-radius: 2px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.4rem;
+      color: #e0e0e0;
+      margin-bottom: 50px;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+
+
+    /* Statistics section */
+    .stats-section {
+      background: #f8f9fa;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .stats-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .stat-item {
+      flex: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .stat-item.animate {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #2563eb;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .star {
+      color: #2563eb;
+      font-size: 2.5rem;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    /* Testimonials section */
+    .testimonials-section {
+      background: #1e3a8a;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonials-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      min-height: 300px;
+    }
+
+    .testimonial-item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateX(50px);
+      transition: all 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .testimonial-item.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .quote-icon {
+      font-size: 4rem;
+      color: #14b8a6;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .testimonial-text {
+      font-size: 1.3rem;
+      color: white;
+      line-height: 1.8;
+      margin-bottom: 25px;
+      max-width: 800px;
+      font-style: italic;
+    }
+
+    .reviewer-info {
+      font-size: 1.1rem;
+      color: #9ca3af;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .rating {
+      font-size: 1.5rem;
+      color: #fbbf24;
+      letter-spacing: 2px;
+    }
+
+    /* Navigation arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      padding: 15px 20px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev-arrow {
+      left: 30px;
+    }
+
+    .next-arrow {
+      right: 30px;
+    }
+
+    /* Dots indicator */
+    .dots-container {
       display: flex;
       justify-content: center;
-      gap: 40px;
-      margin-top: 50px;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: #14b8a6;
+      transform: scale(1.2);
+    }
+
+    .dot:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Popular Services section */
+    .services-section {
+      background: #ffffff;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .services-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .services-title {
+      font-size: 2.5rem;
+      color: #374151;
+      margin-bottom: 50px;
+      font-weight: 600;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .service-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      border-color: #0dc16f;
+    }
+
+    .service-icon {
+      margin-bottom: 20px;
+    }
+
+    .service-icon i {
+      font-size: 2.5rem;
+      color: #0dc16f;
+    }
+
+    .service-name {
+      font-size: 1rem;
+      color: #374151;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* Mission and Features Section */
+    .mission-section {
+      background: #f8f9fa;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .mission-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .mission-header {
+      margin-bottom: 60px;
+    }
+
+    .mission-title {
+      font-size: 2.8rem;
+      color: #374151;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .mission-description {
+      font-size: 1.4rem;
+      color: #6b7280;
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .feature-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      border-color: #0dc16f;
+    }
+
+    .feature-icon {
+      margin-bottom: 20px;
+    }
+
+    .feature-icon i {
+      font-size: 2.5rem;
+      color: #0dc16f;
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      color: #374151;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .feature-description {
+      font-size: 1rem;
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    /* Call to Action Section */
+    .cta-section {
+      background: #f8f9fa;
+      padding: 80px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      position: relative;
+    }
+
+    .cta-image {
+      flex: 1;
+      position: relative;
+    }
+
+    .image-wrapper {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .family-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .cta-content {
+      flex: 1;
+      text-align: left;
+    }
+
+    .cta-title {
+      font-size: 2.8rem;
+      color: #374151;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .cta-description {
+      font-size: 1.4rem;
+      color: #6b7280;
+      line-height: 1.8;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .cta-btn {
+      padding: 18px 35px;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-btn.primary {
+      background: #0dc16f;
+      color: white;
+      box-shadow: 0 4px 15px rgba(13, 193, 111, 0.3);
+    }
+
+    .cta-btn.primary:hover {
+      background: #0aa556;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(13, 193, 111, 0.5);
+    }
+
+    .cta-btn.secondary {
+      background: #333;
+      border: 2px solid #666;
+      color: white;
+      box-shadow: 0 4px 15px rgba(51, 51, 51, 0.3);
+    }
+
+    .cta-btn.secondary:hover {
+      background: #666;
+      border-color: #666;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(51, 51, 51, 0.5);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+      
+      .search-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-input {
+        min-width: auto;
+      }
+      
+      .hero-description {
+        font-size: 1.4rem;
+      }
+
+      .search-container {
+        padding: 25px;
+        margin: 30px 15px;
+      }
+
+      .hero-content {
+        padding: 0 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 2.2rem;
+      }
+
+      .hero-description {
+        font-size: 1.2rem;
+      }
+
+      .search-container {
+        padding: 20px;
+      }
+
+      .search-input input {
+        padding: 15px 15px 15px 45px;
+      }
+
+      .book-now-btn {
+        padding: 15px 25px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .stats-container {
+        flex-direction: column;
+        gap: 40px;
+      }
+      
+      .stat-number {
+        font-size: 3rem;
+      }
+      
+      .star {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .testimonials-section {
+        padding: 60px 15px;
+      }
+      
+      .testimonial-text {
+        font-size: 1.1rem;
+        padding: 0 20px;
+      }
+      
+      .quote-icon {
+        font-size: 3rem;
+      }
+      
+      .nav-arrow {
+        padding: 12px 16px;
+        font-size: 1.2rem;
+      }
+      
+      .prev-arrow {
+        left: 15px;
+      }
+      
+      .next-arrow {
+        right: 15px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      
+      .services-title {
+        font-size: 2rem;
+        margin-bottom: 40px;
+      }
+      
+      .service-card {
+        padding: 25px 15px;
+      }
+      
+      .service-icon i {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .services-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+      }
+      
+      .service-card {
+        padding: 20px 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .mission-title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+      }
+      
+      .mission-description {
+        font-size: 1.2rem;
+        padding: 0 20px;
+      }
+      
+      .feature-card {
+        padding: 25px 20px;
+      }
+      
+      .feature-title {
+        font-size: 1.3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mission-title {
+        font-size: 1.8rem;
+      }
+      
+      .mission-description {
+        font-size: 1.1rem;
+      }
+      
+      .feature-card {
+        padding: 20px 15px;
+      }
+    }
+
+    @media (max-width: 992px) { /* New breakpoint for cta-section */
+      .cta-container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .cta-image {
+        width: 100%;
+        height: 300px; /* Adjust height for smaller screens */
+      }
+      .cta-content {
+        text-align: center;
+        margin-top: 40px;
+      }
+      .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .cta-title {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
+      }
+      
+      .cta-description {
+        font-size: 1.2rem;
+        padding: 0 20px;
+      }
+      
+      .cta-btn {
+        padding: 15px 25px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cta-title {
+        font-size: 1.8rem;
+      }
+      
+      .cta-description {
+        font-size: 1.1rem;
+      }
+      
+      .cta-image {
+        height: 250px;
+      }
+    }
+
+    /* Footer styles */
+    .footer {
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 80px 20px 40px;
+      margin-top: 100px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      gap: 50px;
       flex-wrap: wrap;
     }
 
-    .role-box a {
-      text-decoration: none;
-      padding: 20px 40px;
-      font-size: 1.2rem;
-      background-color: #14532d;
-      color: white;
-      border-radius: 10px;
-      transition: background 0.3s ease, transform 0.3s ease;
+    .footer-section {
+      flex: 1;
+      min-width: 250px;
     }
 
-    .role-box a:hover {
-      background-color: #166534;
-      transform: translateY(-4px);
+    .footer-section h3 {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+
+    .footer-section p {
+      font-size: 1.1rem;
+      color: #9ca3af;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .footer-section a {
+      color: #9ca3af;
+      text-decoration: none;
+      margin-bottom: 10px;
+      display: block;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section a:hover {
+      color: #0dc16f;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .social-links a {
+      font-size: 1.8rem;
+      color: #9ca3af;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: #0dc16f;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-bottom p {
+      font-size: 1.1rem;
+      color: #9ca3af;
+    }
+
+    .footer-legal {
+      color: #0dc16f;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-legal:hover {
+      color: #0aa556;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .footer-section {
+        min-width: 100%;
+        margin-bottom: 40px;
+      }
+      .footer-section h3 {
+        text-align: center;
+      }
+      .footer-section p {
+        text-align: center;
+      }
+      .social-links {
+        justify-content: center;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .footer-bottom p {
+        text-align: center;
+      }
     }
   </style>
 </head>
 <body>
-
   <!-- Navbar -->
   <%- include('partials/navbar') %>
 
-  <!-- Header -->
-  <header>
-    <h1>Welcome to Sajilo Sewa</h1>
-    <p>Choose how you want to continue</p>
-  </header>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Fix Sewa</h1>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <form class="search-form">
+          <div class="search-input">
+            <i class="fas fa-map-marker-alt"></i>
+            <select name="location" required>
+              <option value="">Select Location</option>
+              <option value="thamel">Thamel</option>
+              <option value="boudha">Boudha</option>
+              <option value="patan">Patan (Lalitpur)</option>
+              <option value="bhaktapur">Bhaktapur</option>
+              <option value="koteshwor">Koteshwor</option>
+              <option value="bansbari">Bansbari</option>
+              <option value="tokha">Tokha</option>
+              <option value="kirtipur">Kirtipur</option>
+              <option value="chabahil">Chabahil</option>
+              <option value="gongabu">Gongabu</option>
+              <option value="kalanki">Kalanki</option>
+              <option value="sukedhara">Sukedhara</option>
+              <option value="boudhanath">Boudhanath</option>
+              <option value="pashupatinath">Pashupatinath</option>
+              <option value="swyambhu">Swayambhu</option>
+              <option value="durbarmarg">Durbar Marg</option>
+              <option value="newroad">New Road</option>
+              <option value="asane">Asan</option>
+              <option value="indrachowk">Indra Chowk</option>
+              <option value="ratnapark">Ratna Park</option>
+            </select>
+          </div>
+          <div class="search-input">
+            <i class="fas fa-tools"></i>
+            <select name="work" required>
+              <option value="">Select Work Type</option>
+              <option value="house-cleaning">House Cleaning</option>
+              <option value="interior-painting">Interior Painting</option>
+              <option value="electrical-repair">Electrical & Wiring Repair</option>
+              <option value="plumbing">Plumbing Services</option>
+              <option value="appliance-repair">Appliance Repair</option>
+              <option value="local-moving">Local Moving</option>
+              <option value="handyman">Handyman Services</option>
+              <option value="floor-installation">Floor Installation</option>
+              <option value="junk-removal">Junk Removal</option>
+              <option value="carpentry">Carpentry Work</option>
+              <option value="gardening">Gardening & Landscaping</option>
+              <option value="ac-repair">AC Repair & Maintenance</option>
+              <option value="roofing">Roofing & Repairs</option>
+              <option value="security-installation">Security System Installation</option>
+            </select>
+          </div>
+          <div class="search-input">
+            <i class="fas fa-calendar"></i>
+            <input type="date" name="date" required>
+          </div>
+          <button type="submit" class="book-now-btn">Book Now</button>
+        </form>
+      </div>
 
-  <!-- Role Selection Buttons -->
-  <main>
-    <section class="role-box">
-      <a href="/login?role=customer">I am a Customer</a>
-      <a href="/login?role=worker">I am a Worker</a>
+      <!-- Main Content -->
+      <p class="hero-description">
+        We provide a variety of services for those of you who need it.
+      </p>
+      
+      <div class="separator"></div>
+      
+      <p class="hero-subtitle">
+        Don't worry about the quality of the service.
+      </p>
+    </div>
+  </section>
+
+  <!-- Statistics Section -->
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+        <div class="stat-number">20K+</div>
+        <div class="stat-label">Customer reviews</div>
+      </div>
+      <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+        <div class="stat-number">4.8<span class="star">★</span></div>
+        <div class="stat-label">Average rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="testimonials-section">
+    <div class="testimonials-container">
+      <div class="testimonial-item active" data-index="0">
+        <div class="quote-icon">"</div>
+        <div class="testimonial-text">
+          "Wow! I booked bellhop as they came highly recommended on google. Saul and jeffrey made the move as smooth and easy as possible, they were on time, commutation was super easy! I couldn't be happier!!"
+        </div>
+        <div class="reviewer-info">— Aaska Koirala, Kathmandu Nepal</div>
+        <div class="rating">★★★★★</div>
+      </div>
+
+      <div class="testimonial-item" data-index="1">
+        <div class="quote-icon">"</div>
+        <div class="testimonial-text">
+          "Fix Sewa provided exceptional service! The electrician arrived promptly and fixed our wiring issues efficiently. Professional, courteous, and reasonably priced. Highly recommend!"
+        </div>
+        <div class="reviewer-info">— Rajesh Sharma, Pokhara</div>
+        <div class="rating">★★★★★</div>
+      </div>
+
+      <div class="testimonial-item" data-index="2">
+        <div class="quote-icon">"</div>
+        <div class="testimonial-text">
+          "Amazing cleaning service! The team was thorough and left our home spotless. They were respectful of our space and completed the job faster than expected. Will definitely use again!"
+        </div>
+        <div class="reviewer-info">— Priya Patel, Lalitpur</div>
+        <div class="rating">★★★★★</div>
+      </div>
+
+      <div class="testimonial-item" data-index="3">
+        <div class="quote-icon">"</div>
+        <div class="testimonial-text">
+          "Outstanding plumbing work! The plumber diagnosed the issue quickly and provided a cost-effective solution. Very knowledgeable and professional. Five stars all the way!"
+        </div>
+        <div class="reviewer-info">— Bikash Thapa, Bhaktapur</div>
+        <div class="rating">★★★★★</div>
+      </div>
+
+      <div class="testimonial-item" data-index="4">
+        <div class="quote-icon">"</div>
+        <div class="testimonial-text">
+          "Best painting service I've ever used! The painters were skilled, neat, and completed the job perfectly. Our home looks brand new. Thank you Fix Sewa!"
+        </div>
+        <div class="reviewer-info">— Sunita Tamang, Dharan</div>
+        <div class="rating">★★★★★</div>
+      </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="nav-arrow prev-arrow" onclick="changeTestimonial(-1)">❮</button>
+    <button class="nav-arrow next-arrow" onclick="changeTestimonial(1)">❯</button>
+
+    <!-- Dots Indicator -->
+    <div class="dots-container">
+      <span class="dot active" onclick="goToTestimonial(0)"></span>
+      <span class="dot" onclick="goToTestimonial(1)"></span>
+      <span class="dot" onclick="goToTestimonial(2)"></span>
+      <span class="dot" onclick="goToTestimonial(3)"></span>
+      <span class="dot" onclick="goToTestimonial(4)"></span>
+    </div>
+  </section>
+
+  <!-- Popular Services Section -->
+  <section class="services-section">
+    <div class="services-container">
+      <h2 class="services-title">Popular services near you</h2>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-spray-can"></i>
+          </div>
+          <div class="service-name">House cleaning</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-wrench"></i>
+          </div>
+          <div class="service-name">Handyman</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-plug"></i>
+          </div>
+          <div class="service-name">Electrical and wiring repair</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-paint-roller"></i>
+          </div>
+          <div class="service-name">Interior painting</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-trash"></i>
+          </div>
+          <div class="service-name">Junk removal</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="service-name">Long moving (under 50 miles)</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <div class="service-name">Appliance repair or maintenance</div>
+        </div>
+
+        <div class="service-card">
+          <div class="service-icon">
+            <i class="fas fa-th-large"></i>
+          </div>
+          <div class="service-name">Floor installation or replacement</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission and Features Section -->
+  <section class="mission-section">
+    <div class="mission-container">
+      <div class="mission-header">
+        <h2 class="mission-title">We're on a mission to modernize the work.</h2>
+        <p class="mission-description">
+          Because you can have it all: excellent service, affordability, control, and communication throughout the work process.
+        </p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-desktop"></i>
+          </div>
+          <h3 class="feature-title">Easy Booking</h3>
+          <p class="feature-description">
+            Get a free estimate and schedule your move in minutes, from the comfort of your couch. You can book entirely online, or speak to one of our friendly sales associates over the phone. Just that simple, just that quick.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tags"></i>
+          </div>
+          <h3 class="feature-title">Competitive Pricing</h3>
+          <p class="feature-description">
+            Besides offering industry and market-competitive rates, we go one step further: your moving reservation will be custom-tailored to your unique needs, which means you'll never pay for unnecessary labor or services. What's more, our app-based technology precisely tracks the amount of time spent on your move - so you're not charged for a minute more than it takes to get the job done.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-ban"></i>
+          </div>
+          <h3 class="feature-title">No Hidden Fees</h3>
+          <p class="feature-description">
+            The price you pay for your move will not be a surprise—each line item will be clearly spelled out in your estimate ahead of time. We'll never tack on sneaky fees for fuel, road tolls, moving supplies, or anything else. You deserve better than that!
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-laptop"></i>
+          </div>
+          <h3 class="feature-title">Manage Your work Online</h3>
+          <p class="feature-description">
+            Our unique Customer Dashboard enables you to track or update virtually every aspect of your move online. Your Dashboard will also provide an introduction to (and photos of) your team so that you're greeted by familiar faces on the day of your service. And when your move is complete, you can review and tip your movers here, too.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <h3 class="feature-title">Great Reviews</h3>
+          <p class="feature-description">
+            Don't take it from us; check out the more than 20,000 positive reviews we've received.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-hands-helping"></i>
+          </div>
+          <h3 class="feature-title">Guidance Every Step of the Way</h3>
+          <p class="feature-description">
+            When you book the work, you're never alone. The experts on our move support team are here to answer questions, make helpful suggestions, and troubleshoot any issues that may arise. Having executed more than 300,000 successful moves, you're in great hands with our team.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-image">
+        <div class="image-wrapper">
+          <img src="/images/hero-tools.jpg" alt="Happy family in kitchen" class="family-image">
+        </div>
+      </div>
+      
+      <div class="cta-content">
+        <h2 class="cta-title">Now it's your move.</h2>
+        <p class="cta-description">
+          We understand that every move is unique, which is why you have the ability to tailor your services to best fit your needs. Not sure where to begin? Let us help you unpack your options.
+        </p>
+        
+        <div class="cta-buttons">
+          <a href="/book" class="cta-btn primary">Book a move</a>
+          <a href="tel:9746865495" class="cta-btn secondary">9746865495</a>
+        </div>
+      </div>
+    </div>
     </section>
-  </main>
 
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Fix Sewa</h3>
+        <p>Your trusted partner for all home services. Professional, reliable, and affordable solutions for every need.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <a href="/">Home</a>
+        <a href="/services">Services</a>
+        <a href="/about">About Us</a>
+        <a href="/contact">Contact</a>
+      </div>
+
+      <div class="footer-section">
+        <h3>Services</h3>
+        <a href="#">House Cleaning</a>
+        <a href="#">Interior Painting</a>
+        <a href="#">Electrical Services</a>
+        <a href="#">Plumbing</a>
+        <a href="#">Appliance Repair</a>
+        <a href="#">Moving Services</a>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contact Info</h3>
+        <p><i class="fas fa-phone"></i> +977 9746865495</p>
+        <p><i class="fas fa-envelope"></i> info@fixsewa.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> Kathmandu, Nepal</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Fix Sewa. All rights reserved. | Terms & Conditions | Privacy Policy</p>
+    </div>
+  </footer>
+
+  <script>
+    // Add smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Form submission handling
+    document.querySelector('.search-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const location = document.querySelector('select[name="location"]').value;
+      const work = document.querySelector('select[name="work"]').value;
+      const date = document.querySelector('input[name="date"]').value;
+      
+      if (!location || !work || !date) {
+        alert('Please fill in all fields to book a service.');
+        return;
+      }
+      
+      // Check if user is logged in by making a request to check session
+      fetch('/check-auth', {
+        method: 'GET',
+        credentials: 'same-origin'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.authenticated) {
+          // User is logged in, proceed with booking
+          const locationText = document.querySelector('select[name="location"] option:checked').text;
+          const workText = document.querySelector('select[name="work"] option:checked').text;
+          
+          // Submit booking to server
+          submitBooking(location, work, date, locationText, workText);
+        } else {
+          // User is not logged in, redirect to login page
+          alert('Please login to book a service. You will be redirected to the login page.');
+          window.location.href = '/login';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking authentication:', error);
+        // If there's an error, redirect to login page for safety
+        alert('Please login to book a service. You will be redirected to the login page.');
+        window.location.href = '/login';
+      });
+    });
+
+    // Function to submit booking to server
+    function submitBooking(location, work, date, locationText, workText) {
+      fetch('/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          location: location,
+          work: work,
+          date: date,
+          locationText: locationText,
+          workText: workText
+        }),
+        credentials: 'same-origin'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert(`Service Booking Confirmed!\n\nLocation: ${locationText}\nService: ${workText}\nDate: ${date}\n\nThank you! We'll contact you soon to confirm your booking.`);
+          // Reset form
+          document.querySelector('.search-form').reset();
+        } else {
+          alert('Booking failed. Please try again.');
+        }
+      })
+      .catch(error => {
+        console.error('Error submitting booking:', error);
+        alert('Booking failed. Please try again.');
+      });
+    }
+
+    // Scroll effects for statistics
+    function animateOnScroll() {
+      const statItems = document.querySelectorAll('.stat-item');
+      
+      statItems.forEach(item => {
+        const itemTop = item.getBoundingClientRect().top;
+        const itemVisible = 150;
+        
+        if (itemTop < window.innerHeight - itemVisible) {
+          item.classList.add('animate');
+        }
+      });
+    }
+
+    // Initial check and scroll event listener
+    window.addEventListener('scroll', animateOnScroll);
+    window.addEventListener('load', animateOnScroll);
+
+    // Testimonial navigation
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial-item');
+    const dots = document.querySelectorAll('.dot');
+
+    function showTestimonial(index) {
+      // Hide all testimonials
+      testimonials.forEach(item => item.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+      
+      // Show current testimonial
+      testimonials[index].classList.add('active');
+      dots[index].classList.add('active');
+      
+      currentTestimonial = index;
+    }
+
+    function changeTestimonial(direction) {
+      let newIndex = currentTestimonial + direction;
+      
+      if (newIndex < 0) {
+        newIndex = testimonials.length - 1;
+      } else if (newIndex >= testimonials.length) {
+        newIndex = 0;
+      }
+      
+      showTestimonial(newIndex);
+    }
+
+    function goToTestimonial(index) {
+      showTestimonial(index);
+    }
+
+    // Auto-rotate testimonials every 5 seconds
+    setInterval(() => {
+      changeTestimonial(1);
+    }, 5000);
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        changeTestimonial(-1);
+      } else if (e.key === 'ArrowRight') {
+        changeTestimonial(1);
+      }
+    });
+  </script>
 </body>
 </html>

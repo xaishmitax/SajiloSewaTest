@@ -13,7 +13,7 @@ const db = require('./database/database');
 //  Express App Setup
 // =======================
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 // =======================
 //  View Engine Setup
@@ -353,6 +353,125 @@ app.post('/book', (req, res) => {
     console.error('Booking error:', error);
     res.status(500).json({ success: false, error: 'Server error' });
   }
+});
+
+// Submit Review for Worker - POST
+app.post('/submit-review', (req, res) => {
+  // Check if user is authenticated
+  if (!req.session.user) {
+    return res.status(401).json({ success: false, error: 'User not authenticated' });
+  }
+
+  // Check if user is a customer
+  if (req.session.user.role !== 'customer') {
+    return res.status(403).json({ success: false, error: 'Only customers can submit reviews' });
+  }
+
+  const { bookingId, rating, reviewText } = req.body;
+  const customerId = req.session.user.id;
+
+  // Validate required fields
+  if (!bookingId || !rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ success: false, error: 'Valid booking ID and rating (1-5) are required' });
+  }
+
+  // Check if booking exists and belongs to the customer
+  db.get(`
+    SELECT b.id, b.worker_id, b.status
+    FROM bookings b
+    WHERE b.id = ? AND b.user_id = ? AND b.status = 'completed'
+  `, [bookingId, customerId], (err, booking) => {
+    if (err) {
+      console.error('Error fetching booking:', err);
+      return res.status(500).json({ success: false, error: 'Database error' });
+    }
+
+    if (!booking) {
+      return res.status(404).json({ success: false, error: 'Completed booking not found or not assigned to you' });
+    }
+
+    if (!booking.worker_id) {
+      return res.status(400).json({ success: false, error: 'No worker assigned to this booking' });
+    }
+
+    // Check if review already exists
+    db.get('SELECT id FROM worker_reviews WHERE worker_id = ? AND customer_id = ? AND booking_id = ?', 
+      [booking.worker_id, customerId, bookingId], (checkErr, existingReview) => {
+      if (checkErr) {
+        console.error('Error checking existing review:', checkErr);
+        return res.status(500).json({ success: false, error: 'Database error' });
+      }
+
+      if (existingReview) {
+        return res.status(400).json({ success: false, error: 'You have already reviewed this booking' });
+      }
+
+      // Insert review
+      db.run(`
+        INSERT INTO worker_reviews (worker_id, customer_id, booking_id, rating, review_text, created_at)
+        VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      `, [booking.worker_id, customerId, bookingId, rating, reviewText || null], function(reviewErr) {
+        if (reviewErr) {
+          console.error('Error inserting review:', reviewErr);
+          return res.status(500).json({ success: false, error: 'Database error' });
+        }
+
+        res.json({ success: true, message: 'Review submitted successfully' });
+      });
+    });
+  });
+});
+
+// Test route to debug routing issues
+app.get('/test-route', (req, res) => {
+  console.log('✅ Test route accessed');
+  res.json({ message: 'Test route works!' });
+});
+
+console.log('✅ Routes registered successfully');
+
+// Get completed bookings for review - GET
+app.get('/customer/completed-bookings', (req, res) => {
+  console.log('✅ Route /customer/completed-bookings accessed');
+  
+  // Check if user is authenticated
+  if (!req.session.user) {
+    console.log('❌ User not authenticated');
+    return res.status(401).json({ success: false, error: 'User not authenticated' });
+  }
+
+  // Check if user is a customer
+  if (req.session.user.role !== 'customer') {
+    console.log('❌ Access denied - user role:', req.session.user.role);
+    return res.status(403).json({ success: false, error: 'Access denied' });
+  }
+
+  console.log('✅ User authenticated and is customer, fetching bookings...');
+
+  // Get completed bookings that can be reviewed
+  db.all(`
+    SELECT 
+      b.id,
+      b.work_text,
+      b.location_text,
+      b.date,
+      b.estimated_price,
+      b.created_at,
+      u.name as worker_name,
+      (SELECT COUNT(*) FROM worker_reviews wr WHERE wr.booking_id = b.id AND wr.customer_id = ?) as has_review
+    FROM bookings b
+    LEFT JOIN users u ON b.worker_id = u.id
+    WHERE b.user_id = ? AND b.status = 'completed' AND b.worker_id IS NOT NULL
+    ORDER BY b.created_at DESC
+  `, [req.session.user.id, req.session.user.id], (err, bookings) => {
+    if (err) {
+      console.error('Error fetching completed bookings:', err);
+      return res.status(500).json({ success: false, error: 'Database error' });
+    }
+
+    console.log('✅ Fetched bookings:', bookings);
+    res.json({ success: true, bookings: bookings });
+  });
 });
 
 // =======================

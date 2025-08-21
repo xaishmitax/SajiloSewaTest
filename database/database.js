@@ -79,6 +79,48 @@ db.run(`
   }
 });
 
+// Create notifications table for customer alerts
+db.run(`
+  CREATE TABLE IF NOT EXISTS notifications (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    message TEXT NOT NULL,
+    type TEXT DEFAULT 'info',
+    is_read BOOLEAN DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+  )
+`, (err) => {
+  if (err) {
+    console.error('❌ Error creating notifications table:', err.message);
+  } else {
+    console.log('✅ Notifications table created successfully');
+  }
+});
+
+// Create worker_reviews table
+db.run(`
+  CREATE TABLE IF NOT EXISTS worker_reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    worker_id INTEGER NOT NULL,
+    customer_id INTEGER NOT NULL,
+    booking_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    review_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (worker_id) REFERENCES users (id),
+    FOREIGN KEY (customer_id) REFERENCES users (id),
+    FOREIGN KEY (booking_id) REFERENCES bookings (id)
+  )
+`, (err) => {
+  if (err) {
+    console.error('❌ Error creating worker_reviews table:', err.message);
+  } else {
+    console.log('✅ Worker reviews table created successfully');
+  }
+});
+
 // Test database connection
 db.get('SELECT 1', (err) => {
   if (err) {
